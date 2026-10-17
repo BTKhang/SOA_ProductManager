@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Quản Lý Sản Phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center text-base shadow-sm">
+                        <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">Product Manager</h1>
+                        <p class="text-[11px] text-slate-500">Quản lý kho hàng & danh mục sản phẩm</p>
+                    </div>
+                </div>
+
+                <!-- User Info & Logout -->
+                <div id="navUserBox" class="hidden flex items-center gap-3">
+                    <div class="flex items-center gap-2 bg-slate-100 py-1 px-3 rounded-lg border border-slate-200 text-xs">
+                        <i class="fa-regular fa-circle-user text-slate-600"></i>
+                        <span class="font-medium text-slate-700" id="navUserName">admin</span>
+                    </div>
+                    <button id="btnLogout" class="text-xs font-medium px-3 py-1.5 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-600 rounded-lg transition border border-slate-200">
+                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>
+                        Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 flex flex-col justify-center">
+
+        <!-- MÀN HÌNH XÁC THỰC (ĐĂNG NHẬP / ĐĂNG KÝ / 2FA) -->
+        <section id="authSection" class="w-full max-w-md mx-auto px-4 py-12">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                
+                <!-- Tab Chuyển Đổi -->
+                <div id="authTabs" class="flex border-b border-slate-200 bg-slate-50 text-xs font-semibold">
+                    <button id="tabLoginBtn" class="flex-1 py-3 text-center border-b-2 border-blue-600 text-blue-600 bg-white transition">
+                        Đăng nhập
+                    </button>
+                    <button id="tabRegisterBtn" class="flex-1 py-3 text-center border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition">
+                        Đăng ký tài khoản
+                    </button>
+                </div>
+
+                <div class="p-6">
+                    <!-- Form Đăng nhập -->
+                    <form id="loginForm" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Tên đăng nhập</label>
+                            <input type="text" id="inputLoginUser" required value="admin" placeholder="Nhập tên đăng nhập..." class="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Mật khẩu</label>
+                            <input type="password" id="inputLoginPass" required value="123456" placeholder="Nhập mật khẩu..." class="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition flex items-center justify-center gap-2">
+                            <span>Tiếp tục</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </form>
+
+                    <!-- Form Đăng ký -->
+                    <form id="registerForm" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Tên đăng nhập mới</label>
+                            <input type="text" id="inputRegUser" required placeholder="Ví dụ: nguyenvana" class="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Mật khẩu</label>
+                            <input type="password" id="inputRegPass" required placeholder="Tối thiểu 6 ký tự" class="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-700 mb-1">Xác nhận mật khẩu</label>
+                            <input type="password" id="inputRegPassConfirm" required placeholder="Nhập lại mật khẩu..." class="w-full text-xs px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                            Tạo tài khoản
+                        </button>
+                    </form>
+
+                    <!-- Form Xác thực 2FA -->
+                    <form id="twoFactorForm" class="space-y-4 hidden">
+                        <div class="text-center space-y-1">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto text-lg mb-2">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h3 class="text-sm font-bold text-slate-900">Xác thực hai bước (2FA)</h3>
+                            <p class="text-xs text-slate-500">Nhập mã bảo mật 6 chữ số để hoàn tất đăng nhập.</p>
+                        </div>
+
+                        <div id="otpDisplayNotice" class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
+                            <p class="text-[11px] text-blue-600 mb-0.5">Mã OTP của bạn:</p>
+                            <span id="generatedOtpCode" class="font-mono text-base font-bold text-blue-700 tracking-widest">123456</span>
+                        </div>
+
+                        <div>
+                            <input type="text" id="inputOtp" maxlength="6" required placeholder="Nhập mã 6 chữ số..." class="w-full text-center tracking-[0.5em] font-mono text-sm px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                            Xác thực & Vào hệ thống
+                        </button>
+
+                        <div class="text-center pt-2">
+                            <button type="button" id="btnBackToLogin" class="text-xs text-slate-500 hover:text-slate-800 transition">
+                                &larr; Quay lại đăng nhập
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- MÀN HÌNH QUẢN LÝ SẢN PHẨM (DASHBOARD) -->
+        <section id="dashboardSection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
+
+            <!-- Thống kê nhanh -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg shrink-0">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng sản phẩm</p>
+                        <h3 id="statTotalItems" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                        <i class="fa-solid fa-warehouse"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng tồn kho</p>
+                        <h3 id="statTotalQuantity" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                    <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
+                        <i class="fa-solid fa-coins"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Giá trị tồn kho</p>
+                        <h3 id="statTotalValue" class="text-2xl font-bold text-slate-900 mt-0.5">0 ₫</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bảng danh mục sản phẩm -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <!-- Toolbar -->
+                <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-sm font-bold text-slate-900">Danh mục sản phẩm</h2>
+                        <span id="productCountBadge" class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                            0 sản phẩm
+                        </span>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <!-- Ô tìm kiếm -->
+                        <div class="relative min-w-[220px]">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." class="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                        </div>
+
+                        <!-- Nút Tải lại -->
+                        <button id="btnReload" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition" title="Tải lại dữ liệu">
+                            <i class="fa-solid fa-rotate-right text-xs"></i>
+                        </button>
+
+                        <!-- Nút Thêm mới -->
+                        <button id="btnOpenCreateModal" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            Thêm sản phẩm
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-[11px] uppercase tracking-wider">
+                                <th class="py-3 px-3 w-12 text-center">ID</th>
+                                <th class="py-3 px-3 w-14 text-center">Ảnh</th>
+                                <th class="py-3 px-4">Tên sản phẩm</th>
+                                <th class="py-3 px-4">Mô tả</th>
+                                <th class="py-3 px-4 text-right">Đơn giá</th>
+                                <th class="py-3 px-4 text-center">Tồn kho</th>
+                                <th class="py-3 px-4 text-center">Cập nhật</th>
+                                <th class="py-3 px-4 text-center w-28">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody" class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td colspan="8" class="py-12 text-center text-slate-400">
+                                    <i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2"></i>
+                                    <p>Đang tải dữ liệu...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400">
+        <p>Product Management System &bull; Cổng dịch vụ: 3001</p>
+    </footer>
+
+    <!-- MODAL THÊM / SỬA SẢN PHẨM -->
+    <div id="productModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden animate-scale-up">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 id="modalTitle" class="text-sm font-bold text-slate-900">Thêm sản phẩm mới</h3>
+                <button id="btnCloseModal" class="text-slate-400 hover:text-slate-600 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="productForm" class="p-5 space-y-3.5">
+                <input type="hidden" id="formProductId">
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Tên sản phẩm <span class="text-rose-500">*</span></label>
+                    <input type="text" id="formName" required placeholder="Nhập tên sản phẩm..." class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Hình ảnh sản phẩm (Link URL)</label>
+                    <div class="flex items-center gap-2">
+                        <input type="url" id="formImage" placeholder="https://example.com/image.jpg" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="formImagePreviewBox" class="w-9 h-9 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center shrink-0">
+                            <i class="fa-regular fa-image text-slate-400 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Mô tả</label>
+                    <textarea id="formDescription" rows="2" placeholder="Mô tả sản phẩm..." class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Đơn giá (VNĐ) <span class="text-rose-500">*</span></label>
+                        <input type="number" id="formPrice" required min="0" step="1000" placeholder="100000" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Số lượng tồn <span class="text-rose-500">*</span></label>
+                        <input type="number" id="formQuantity" required min="0" step="1" value="0" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                    <button type="button" id="btnCancelModal" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition">
+                        Hủy
+                    </button>
+                    <button type="submit" id="btnSubmitModal" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                        Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL CHI TIẾT SẢN PHẨM -->
+    <div id="detailModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden animate-scale-up">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-900">Chi tiết sản phẩm</h3>
+                <button id="btnCloseDetailModal" class="text-slate-400 hover:text-slate-600 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-5 space-y-3">
+                <div id="detailContent" class="space-y-3 text-xs"></div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button id="btnCloseDetailBtn" class="px-3.5 py-1.5 text-xs font-medium bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg transition">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 max-w-sm w-full bg-slate-900 text-white px-4 py-3 rounded-lg shadow-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-200">
+        <div id="toastIcon" class="text-base"></div>
+        <div class="flex-1 text-xs" id="toastMessage"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
