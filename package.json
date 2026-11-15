@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/app.js",
     "auth": "node auth-service/server.js",
+    "order": "node order-service/server.js",
     "start:both": "node run_both.js",
+    "start:all": "node run_both.js",
     "test": "node test.js"
   },
   "keywords": [

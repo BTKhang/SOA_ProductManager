@@ -14,15 +14,27 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex items-center justify-between">
-                <!-- Logo -->
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center text-base shadow-sm">
-                        <i class="fa-solid fa-box-archive"></i>
+                <!-- Logo & Nav Tabs -->
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center text-base shadow-sm">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">Store Manager</h1>
+                            <p class="text-[11px] text-slate-500">Quản lý sản phẩm & đơn hàng</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-base font-bold text-slate-900 tracking-tight leading-tight">Product Manager</h1>
-                        <p class="text-[11px] text-slate-500">Quản lý kho hàng & danh mục sản phẩm</p>
-                    </div>
+
+                    <!-- Navigation Tabs (Chỉ hiển thị khi đã đăng nhập) -->
+                    <nav id="mainNavTabs" class="hidden sm:flex items-center space-x-1 pl-4 border-l border-slate-200">
+                        <button id="navTabProducts" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-blue-50 text-blue-700 transition">
+                            <i class="fa-solid fa-box-archive mr-1.5 text-xs"></i>Sản phẩm
+                        </button>
+                        <button id="navTabOrders" class="px-3.5 py-1.5 text-xs font-medium rounded-lg text-slate-600 hover:bg-slate-100 transition">
+                            <i class="fa-solid fa-receipt mr-1.5 text-xs"></i>Đơn hàng
+                        </button>
+                    </nav>
                 </div>
 
                 <!-- User Info & Logout -->
@@ -127,97 +139,186 @@
             </div>
         </section>
 
-        <!-- MÀN HÌNH QUẢN LÝ SẢN PHẨM (DASHBOARD) -->
+        <!-- ================= MÀN HÌNH QUẢN LÝ (DASHBOARD) ================= -->
         <section id="dashboardSection" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full space-y-6">
 
-            <!-- Thống kê nhanh -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg shrink-0">
-                        <i class="fa-solid fa-boxes-stacked"></i>
+            <!-- 1. TAB QUẢN LÝ SẢN PHẨM -->
+            <div id="productsViewSection" class="space-y-6">
+                <!-- Thống kê nhanh Sản phẩm -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng sản phẩm</p>
+                            <h3 id="statTotalItems" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng sản phẩm</p>
-                        <h3 id="statTotalItems" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-warehouse"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng tồn kho</p>
+                            <h3 id="statTotalQuantity" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Giá trị tồn kho</p>
+                            <h3 id="statTotalValue" class="text-2xl font-bold text-slate-900 mt-0.5">0 ₫</h3>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
-                        <i class="fa-solid fa-warehouse"></i>
-                    </div>
-                    <div>
-                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng tồn kho</p>
-                        <h3 id="statTotalQuantity" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
-                    </div>
-                </div>
+                <!-- Bảng danh mục sản phẩm -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm font-bold text-slate-900">Danh mục sản phẩm</h2>
+                            <span id="productCountBadge" class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                0 sản phẩm
+                            </span>
+                        </div>
 
-                <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
-                    <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
-                        <i class="fa-solid fa-coins"></i>
+                        <div class="flex items-center gap-2">
+                            <div class="relative min-w-[220px]">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." class="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            </div>
+
+                            <button id="btnReload" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition" title="Tải lại dữ liệu">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                            </button>
+
+                            <button id="btnOpenCreateModal" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                Thêm sản phẩm
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Giá trị tồn kho</p>
-                        <h3 id="statTotalValue" class="text-2xl font-bold text-slate-900 mt-0.5">0 ₫</h3>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-[11px] uppercase tracking-wider">
+                                    <th class="py-3 px-3 w-12 text-center">ID</th>
+                                    <th class="py-3 px-3 w-14 text-center">Ảnh</th>
+                                    <th class="py-3 px-4">Tên sản phẩm</th>
+                                    <th class="py-3 px-4">Mô tả</th>
+                                    <th class="py-3 px-4 text-right">Đơn giá</th>
+                                    <th class="py-3 px-4 text-center">Tồn kho</th>
+                                    <th class="py-3 px-4 text-center">Cập nhật</th>
+                                    <th class="py-3 px-4 text-center w-28">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="8" class="py-12 text-center text-slate-400">
+                                        <i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2"></i>
+                                        <p>Đang tải dữ liệu...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Bảng danh mục sản phẩm -->
-            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                <!-- Toolbar -->
-                <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div class="flex items-center gap-2">
-                        <h2 class="text-sm font-bold text-slate-900">Danh mục sản phẩm</h2>
-                        <span id="productCountBadge" class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-                            0 sản phẩm
-                        </span>
+            <!-- 2. TAB QUẢN LÝ ĐƠN HÀNG -->
+            <div id="ordersViewSection" class="hidden space-y-6">
+                <!-- Thống kê nhanh Đơn hàng -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Tổng đơn hàng</p>
+                            <h3 id="statTotalOrders" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                        </div>
                     </div>
 
-                    <div class="flex items-center gap-2">
-                        <!-- Ô tìm kiếm -->
-                        <div class="relative min-w-[220px]">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                            <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." class="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
                         </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Đang chờ xử lý</p>
+                            <h3 id="statPendingOrders" class="text-2xl font-bold text-slate-900 mt-0.5">0</h3>
+                        </div>
+                    </div>
 
-                        <!-- Nút Tải lại -->
-                        <button id="btnReload" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition" title="Tải lại dữ liệu">
-                            <i class="fa-solid fa-rotate-right text-xs"></i>
-                        </button>
-
-                        <!-- Nút Thêm mới -->
-                        <button id="btnOpenCreateModal" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
-                            <i class="fa-solid fa-plus text-xs"></i>
-                            Thêm sản phẩm
-                        </button>
+                    <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <p class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Doanh thu hoàn thành</p>
+                            <h3 id="statCompletedRevenue" class="text-2xl font-bold text-slate-900 mt-0.5">0 ₫</h3>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs border-collapse">
-                        <thead>
-                            <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-[11px] uppercase tracking-wider">
-                                <th class="py-3 px-3 w-12 text-center">ID</th>
-                                <th class="py-3 px-3 w-14 text-center">Ảnh</th>
-                                <th class="py-3 px-4">Tên sản phẩm</th>
-                                <th class="py-3 px-4">Mô tả</th>
-                                <th class="py-3 px-4 text-right">Đơn giá</th>
-                                <th class="py-3 px-4 text-center">Tồn kho</th>
-                                <th class="py-3 px-4 text-center">Cập nhật</th>
-                                <th class="py-3 px-4 text-center w-28">Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productTableBody" class="divide-y divide-slate-100 text-slate-700">
-                            <tr>
-                                <td colspan="8" class="py-12 text-center text-slate-400">
-                                    <i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2"></i>
-                                    <p>Đang tải dữ liệu...</p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Bảng danh sách đơn hàng -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm font-bold text-slate-900">Danh sách đơn hàng</h2>
+                            <span id="orderCountBadge" class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                0 đơn hàng
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <!-- Bộ lọc trạng thái -->
+                            <select id="orderStatusFilter" class="text-xs px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="pending">Chờ xử lý (pending)</option>
+                                <option value="completed">Đã hoàn thành (completed)</option>
+                                <option value="cancelled">Đã hủy (cancelled)</option>
+                            </select>
+
+                            <button id="btnReloadOrders" class="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition" title="Tải lại đơn hàng">
+                                <i class="fa-solid fa-rotate-right text-xs"></i>
+                            </button>
+
+                            <button id="btnOpenCreateOrderModal" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                                Tạo đơn hàng mới
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200 text-[11px] uppercase tracking-wider">
+                                    <th class="py-3 px-3 w-14 text-center">Mã ĐH</th>
+                                    <th class="py-3 px-4">Khách hàng</th>
+                                    <th class="py-3 px-4">Email</th>
+                                    <th class="py-3 px-4 text-right">Tổng tiền</th>
+                                    <th class="py-3 px-4 text-center">Trạng thái</th>
+                                    <th class="py-3 px-4 text-center">Ngày tạo</th>
+                                    <th class="py-3 px-4 text-center w-32">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="7" class="py-12 text-center text-slate-400">
+                                        <i class="fa-solid fa-spinner fa-spin text-xl text-blue-500 mb-2"></i>
+                                        <p>Đang tải đơn hàng...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -227,10 +328,12 @@
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400">
-        <p>Product Management System &bull; Cổng dịch vụ: 3001</p>
+        <p>Hệ thống SOA: Auth (:3000) &bull; Products (:3001) &bull; Orders (:3002)</p>
     </footer>
 
-    <!-- MODAL THÊM / SỬA SẢN PHẨM -->
+    <!-- ================= MODALS ================= -->
+
+    <!-- 1. MODAL THÊM / SỬA SẢN PHẨM -->
     <div id="productModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden animate-scale-up">
             <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
@@ -286,7 +389,7 @@
         </div>
     </div>
 
-    <!-- MODAL CHI TIẾT SẢN PHẨM -->
+    <!-- 2. MODAL CHI TIẾT SẢN PHẨM -->
     <div id="detailModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-md w-full overflow-hidden animate-scale-up">
             <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
@@ -302,6 +405,142 @@
 
             <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex justify-end">
                 <button id="btnCloseDetailBtn" class="px-3.5 py-1.5 text-xs font-medium bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg transition">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL TẠO ĐƠN HÀNG MỚI (TÍCH HỢP KIỂM TRA TỒN KHO) -->
+    <div id="orderCreateModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden animate-scale-up">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-900">Tạo đơn hàng mới</h3>
+                <button id="btnCloseOrderCreateModal" class="text-slate-400 hover:text-slate-600 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="orderCreateForm" class="p-5 space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Tên khách hàng <span class="text-rose-500">*</span></label>
+                        <input type="text" id="orderCustomerName" required placeholder="Nguyễn Văn A" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-700 mb-1">Email <span class="text-rose-500">*</span></label>
+                        <input type="email" id="orderCustomerEmail" required placeholder="nguyenvana@gmail.com" class="w-full text-xs px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                </div>
+
+                <!-- Chọn sản phẩm và số lượng -->
+                <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                    <p class="text-[11px] font-semibold text-slate-700 uppercase tracking-wider">Thêm mặt hàng vào đơn</p>
+                    <div class="grid grid-cols-12 gap-2">
+                        <div class="col-span-7">
+                            <select id="selectOrderProduct" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="">-- Chọn sản phẩm --</option>
+                            </select>
+                        </div>
+                        <div class="col-span-3">
+                            <input type="number" id="inputOrderProductQty" min="1" value="1" placeholder="SL" class="w-full text-xs px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="col-span-2">
+                            <button type="button" id="btnAddItemToCart" class="w-full py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                                Thêm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bảng danh sách mặt hàng đã chọn -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-700 mb-1">Danh sách mặt hàng đã chọn:</label>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden max-h-40 overflow-y-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-50 text-[11px] text-slate-500 font-semibold border-b border-slate-200">
+                                <tr>
+                                    <th class="py-2 px-3">Sản phẩm</th>
+                                    <th class="py-2 px-2 text-center w-12">SL</th>
+                                    <th class="py-2 px-3 text-right">Đơn giá</th>
+                                    <th class="py-2 px-3 text-right">Thành tiền</th>
+                                    <th class="py-2 px-2 text-center w-8"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="5" class="py-4 text-center text-slate-400 text-xs">Chưa có sản phẩm nào được chọn</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tổng tiền tạm tính -->
+                <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+                    <span class="text-xs font-semibold text-slate-600">Tổng thanh toán:</span>
+                    <span id="cartTotalAmountDisplay" class="text-base font-bold text-indigo-700">0 ₫</span>
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                    <button type="button" id="btnCancelOrderCreate" class="px-3.5 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg transition">
+                        Hủy
+                    </button>
+                    <button type="submit" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-sm transition">
+                        Xác nhận đặt hàng
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. MODAL CHI TIẾT ĐƠN HÀNG (HIỂN THỊ CẢ ORDER_ITEMS) -->
+    <div id="orderDetailModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-lg w-full overflow-hidden animate-scale-up">
+            <div class="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                <h3 id="orderDetailModalTitle" class="text-sm font-bold text-slate-900">Chi tiết đơn hàng</h3>
+                <button id="btnCloseOrderDetailModal" class="text-slate-400 hover:text-slate-600 text-base">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-5 space-y-4">
+                <!-- Thông tin khách hàng & trạng thái -->
+                <div id="orderDetailSummary" class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 grid grid-cols-2 gap-2 text-xs">
+                </div>
+
+                <!-- Bảng order_items -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1.5">Mặt hàng trong đơn hàng:</label>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead class="bg-slate-50 text-[11px] text-slate-500 font-semibold border-b border-slate-200">
+                                <tr>
+                                    <th class="py-2.5 px-3">Tên sản phẩm</th>
+                                    <th class="py-2.5 px-2 text-center w-12">SL</th>
+                                    <th class="py-2.5 px-3 text-right">Đơn giá</th>
+                                    <th class="py-2.5 px-3 text-right">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderDetailItemsBody" class="divide-y divide-slate-100 text-slate-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Đổi trạng thái nhanh -->
+                <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                    <span class="font-medium text-slate-600">Cập nhật trạng thái:</span>
+                    <div id="orderStatusActionButtons" class="flex items-center gap-1.5">
+                        <button onclick="updateOrderStatusAction('pending')" class="px-2.5 py-1 rounded bg-amber-50 text-amber-700 hover:bg-amber-100 font-medium">Chờ xử lý</button>
+                        <button onclick="updateOrderStatusAction('completed')" class="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-medium">Hoàn thành</button>
+                        <button onclick="updateOrderStatusAction('cancelled')" class="px-2.5 py-1 rounded bg-rose-50 text-rose-700 hover:bg-rose-100 font-medium">Hủy đơn</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button id="btnCloseOrderDetailBtn" class="px-3.5 py-1.5 text-xs font-medium bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-lg transition">
                     Đóng
                 </button>
             </div>

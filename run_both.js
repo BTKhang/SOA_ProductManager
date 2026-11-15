@@ -23,7 +23,7 @@ const checkPort = (port) => {
 };
 
 const startServices = async () => {
-    console.log('Starting Auth Service (:3000) and Product Service (:3001)...\n');
+    console.log('Starting Auth Service (:3000), Product Service (:3001), and Order Service (:3002)...\n');
 
     // Kiểm tra kết nối MySQL cổng 3306
     const isMySQLRunning = await checkPort(3306);
@@ -51,10 +51,16 @@ const startServices = async () => {
         shell: true
     });
 
+    const orderProcess = spawn('node', [path.join(__dirname, 'order-service/server.js')], {
+        stdio: 'inherit',
+        shell: true
+    });
+
     const cleanup = () => {
         console.log('\nStopping services...');
         authProcess.kill();
         productProcess.kill();
+        orderProcess.kill();
         process.exit();
     };
 
